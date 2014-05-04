@@ -12,14 +12,14 @@ END;
 MEMBER FUNCTION getdTemperature RETURN VARCHAR
 IS
 BEGIN
-  IF dTemperature = 0 THEN
-    RETURN 'No TEMP';
-  ELSIF dTemperature < 40 THEN
+  IF dTemperature = ' ' THEN
+    RETURN 'NR';
+  ELSIF dTemperature < '40' THEN
     RETURN '1 - 39';
-  ELSIF dTemperature < 60 THEN
-    RETURN '40 - 59';
+  ELSIF dTemperature < '60' THEN
+     RETURN '40 - 59';
   ELSE
-    RETURN '+60';
+      RETURN '+60';
   END IF;
 END;
 MEMBER FUNCTION getJourDeSemaine RETURN varchar
@@ -53,11 +53,10 @@ IS
 BEGIN
   RETURN pRef;
 END;
-member function getpPrice RETURN number
-IS
+member function getpPrice RETURN varchar IS
 BEGIN
 	IF pPrice = 0 Then 
-		RETURN '0';
+		RETURN '-49';
 	ELSIF pPrice < 50 THEN
 		RETURN '0-49';
 	ELSIF pPrice < 100 THEN	
@@ -65,42 +64,45 @@ BEGIN
 	ELSIF pPrice < 150 THEN	
 		RETURN '100-149';
 	else
-		RETURN '150 et plus';
+		RETURN '150+';
+  END IF;
 END;
 member function getpType RETURN varchar
 IS
 BEGIN
-	if pType THEN 
+	if pType is NOT NULL THEN 
 		RETURN pType;
 	ELSE 
 		RETURN 'NR';
+  END IF;
 END;
 member function getpCity RETURN varchar
 IS
 NB number(7);
 BEGIN
-	select count(*) into nb from f_bde_city city where city.Cname = pCity
+	select count(*) into nb from f_bde_city city where city.Cname = pCity;
 	if nb = 0 THEN
 		RETURN 'NR';
 	elsif nb = 1 THEN
 		RETURN pCity;
 	else
 		RETURN 'Multiple-Ville';
+  END IF;
 END;
 member function getpCityPop RETURN varchar
 IS
 NB number(7);
 BEGIN
-	select count(*) into nb from f_bde_city city where city.Cname = self.getpCity();
+	select count(*) into nb from f_bde_city city where city.Cname = pCity;
 	if nb = 0 THEN
 		RETURN 'NR';
 	elsif nb = 1 THEN
 		RETURN pCityPop;
 	else
 		RETURN 'Multiple-Ville';
+  END IF;
 END;
-member function getpSector RETURN varchar
-IS
+member function getpSector RETURN varchar IS
 NB number(7);
 BEGIN
 	select count(*) into nb from f_bde_sector s where s.sname = pSector;
@@ -110,18 +112,20 @@ BEGIN
 		RETURN pSector;
 	else
 		RETURN 'Multiple-Sector';
+  END IF;
 END;
 member function getpSectorSur RETURN varchar
 IS
 NB number(7);
 BEGIN
-	select count(*) into nb from f_bde_sector s where s.sname = self.getpSector();
+	select count(*) into nb from f_bde_sector s where s.sname = pSector;
 	if nb = 0 THEN
 		RETURN 'NR';
 	elsif nb = 1 THEN
-		RETURN pSectorSup;
+		RETURN pSectorSur;
 	else
 		RETURN 'Multiple-Sector';
+  END IF;
 END;
 member function getpBestSeller RETURN varchar
 IS
@@ -145,11 +149,9 @@ WHERE prod=SELF.pRef;
       RETURN 0;
 END;
 END;
+
 Prompt ** BDT : Creation Des Fonctions : Table f_bdt_card **
 CREATE OR REPLACE TYPE BODY f_bdt_card_type IS
-IS
-BEGIN
-END;
 member function getcNum return varchar IS
 BEGIN
 	return cnum;
@@ -164,17 +166,19 @@ BEGIN
 		RETURN cSector;
 	else
 		RETURN 'Multiple-Sector';
+  END IF;
 END;
 member function getcSectorSur return varchar IS
 NB number(7);
 BEGIN
-	select count(*) into nb from f_bde_sector s where s.sname = self.getcSector();
+	select count(*) into nb from f_bde_sector s where s.sname = cSector;
 	if nb = 0 THEN
 		RETURN 'NR';
 	elsif nb = 1 THEN
-		RETURN pSectorSup;
+		RETURN cSectorSur;
 	else
 		RETURN 'Multiple-Sector';
+  END IF;
 END;
 member function getcOccupation return varchar IS
 BEGIN
@@ -207,6 +211,7 @@ END;
 END;
 
 Prompt ** BDT : Creation Des Fonctions : Table f_bdt_clerk **
+CREATE OR REPLACE TYPE BODY f_bdt_clerk_type IS
 member function getcNum return number IS
 BEGIN
 	RETURN cNum;
@@ -222,24 +227,26 @@ END;
 member function getcCity return varchar IS
 NB number(7);
 BEGIN
-	select count(*) into nb from f_bde_city city where city.Cname = cCity
+	select count(*) into nb from f_bde_city city where city.Cname = cCity;
 	if nb = 0 THEN
 		RETURN 'NR';
 	elsif nb = 1 THEN
 		RETURN cCity;
 	else
 		RETURN 'Multiple-Ville';
+  END IF;
 END;
 member function getcCityPop return varchar IS
 NB number(7);
 BEGIN
-	select count(*) into nb from f_bde_city city where city.Cname = self.getcCity();
+	select count(*) into nb from f_bde_city city where city.Cname = cCity;
 	if nb = 0 THEN
 		RETURN 'NR';
 	elsif nb = 1 THEN
 		RETURN cCityPop;
 	else
 		RETURN 'Multiple-Ville';
+  END IF;
 END;
 member function getcSector return varchar IS
 NB number(7);
@@ -251,17 +258,19 @@ BEGIN
 		RETURN cSector;
 	else
 		RETURN 'Multiple-Sector';
+  END IF;
 END;
 member function getcSectorSur return varchar IS
 NB number(7);
 BEGIN
-	select count(*) into nb from f_bde_sector s where s.sname = self.getcSector();
+	select count(*) into nb from f_bde_sector s where s.sname = cSector;
 	if nb = 0 THEN
 		RETURN 'NR';
 	elsif nb = 1 THEN
-		RETURN pSectorSup;
+		RETURN cSectorSur;
 	else
 		RETURN 'Multiple-Sector';
+  END IF;
 END;
 member function getcBestClerk return varchar IS
 BEGIN
@@ -274,7 +283,7 @@ END;
 END;
 
 Prompt ** BDT : Creation Des Fonctions : Table f_bdt_vente **
-CREATE OR REPLACE TYPE BODY f_bdt_vente_type IS
+CREATE OR REPLACE TYPE BODY f_bdt_ventes_type IS
 MEMBER FUNCTION getvNumber RETURN varchar is
 BEGIN
 	RETURN vNumber;

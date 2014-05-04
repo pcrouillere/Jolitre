@@ -16,10 +16,13 @@ Drop INDEX f_dw_date_idk;
 Prompt **BDT TO DW : Insertions des données **
 Prompt **BDT TO DW : Insertions des données : Table f_dw_date **
 insert into f_dw_date(dDate, dTemperature, dJourSemaine, dSemaine, dMois, dAnnee)
-SELECT distinct d.getdDate, d.getdTemperature, d.getJourDeSemaine, d.getSemaine, d.getMois, d.getAnnee  
+SELECT distinct d.getdDate(), d.getdTemperature(), d.getJourDeSemaine(), d.getSemaine(), d.getMois(), d.getAnnee()  
 from f_bdt_date d;
 
 Prompt **BDT TO DW : Insertions des données : Table f_dw_product **
+insert into f_dw_product(pref, pprice, ptype, pcity, pcitypop, psector, psectorsur, pbestseller)
+select distinct p.getpref(), p.getpprice(), p.getptype(), p.getcity(), p.getpsector(), p.getpsectorsur(), p.getpbestseller()
+from F_BDT_PRODUCT p;
 
 Prompt **BDT TO DW : Insertions des données : Table f_dw_clerk **
 

@@ -9,19 +9,12 @@ t6 varchar(50),
 t7 varchar(50)
 );
 
-insert into test(t1,t2, t3, t4, t5, t6)
-select distinct d.getdDate(), d.getdTemperature(), d.getJourDeSemaine(), d.getSemaine(), d.getMois(), d.getAnnee()
-from f_bdt_date d
-where rownum < 10;
+insert into test(t3)
+select distinct d.getdTemperature()
+from f_bdt_date d;
 
-
-member function getdDate return Date,
-member function getdTemperature return varchar, 
-member function getJourDeSemaine return varchar,
-member function getSemaine return number,
-member function getMois return number,
-member function getAnnee return number
-
+select * from f_bdt_date where dTemperature=' ';
+select * from f_bdt_date;
 
 insert into test(t1,t2, t3, t4, t5, t6, t7)
 select clerk.CNUM, clerk.CYEAR, clerk.CSTORE, st.SCITY, city.CPOP, st.SSECTOR, sector.SSUP
