@@ -1,11 +1,3 @@
-Prompt ** DW: Drop Table **
-drop table f_dw_ventes;
-drop table f_dw_date;
-drop table f_dw_clerk;
-drop table f_dw_product;
-drop table f_dw_card;
-
-
 Prompt ** DW: Creation des tables **
 Prompt ** DW: Creation des tables : Table date **
 CREATE TABLE f_dw_date(
@@ -41,9 +33,9 @@ pRef varchar(15),
 pPrice varchar(10),
 pType varchar(50),
 pCity varchar(50),
-pCityPop varchar(50),
-pSector varchar(50),
-pSectorSur varchar(50),
+pCityPop varchar(20),
+pSector varchar(20),
+pSectorSur varchar(10),
 pBestSeller number
 );
 CREATE UNIQUE INDEX f_dw_product_idk on f_dw_product(pRef);
@@ -51,11 +43,11 @@ Alter table f_dw_product add constraint f_dw_product_pk PRIMARY KEY (pRef);
 
 Prompt ** DW: Creation des tables : Table card **
 create table f_dw_card (
-cNum varchar(50),
-cSector varchar(50),
-cSectorSur varchar(50),
-cOccupation varchar(50),
-cHouse varchar(50),
+cNum varchar(20),
+cSector varchar(20),
+cSectorSur varchar(10),
+cOccupation varchar(30),
+cHouse varchar(30),
 cHighSpenser varchar(2)
 );
 CREATE UNIQUE INDEX f_dw_card_idk on f_dw_card(cNum);
@@ -66,7 +58,7 @@ create table f_dw_ventes (
 vNumber number,
 vProduit Varchar(30),
 vClerk Varchar (30),
-vCard number,
+vCard varchar(20),
 vDate Date
 );
 ALTER TABLE f_dw_ventes

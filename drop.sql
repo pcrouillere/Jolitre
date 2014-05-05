@@ -16,4 +16,9 @@ drop table f_bdt_ventes;
 drop table f_bdt_clerk;
 drop table f_bdt_product;
 
-Prompt ** Drop Table DW **
+Prompt ** DW: Drop Table **
+drop table f_dw_ventes;
+drop table f_dw_date;
+drop table f_dw_clerk;
+drop table f_dw_product;
+drop table f_dw_card;

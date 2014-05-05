@@ -61,13 +61,6 @@ select p.getvProduit() from f_bdt_ventes p where rownum < 10;
 select p.getvClerk() from f_bdt_ventes p where rownum < 10;
 select p.getvClient() from f_bdt_ventes p where rownum < 100;
 
-member function getvDate return Date,
-member function getvNumber return varchar, 
-member function getvProduit return varchar,
-member function getvClerk return varchar,
-member function getvClient return varchar
-
-
 CREATE OR REPLACE TYPE BODY f_bdt_clerk_type IS
 member function getcNum return number IS
 BEGIN
@@ -147,19 +140,6 @@ select p.getcCityPop() from f_bdt_clerk p where rownum < 10;
 select p.getcSector() from f_bdt_clerk p where rownum < 10;
 select p.getcSectorSur() from f_bdt_clerk p where rownum < 10;
 select p.getcBestClerk() from f_bdt_clerk p where rownum < 10;
-
-member function getcNum return number,
-member function getcExp return number,
-member function getcStore return varchar,
-member function getcCity return varchar,
-member function getcCityPop return varchar,
-member function getcSector return varchar,
-member function getcSectorSur return varchar,
-member function getcBestClerk return varchar,
-member function getcBestStore return varchar
-
-
-
 
 CREATE OR REPLACE TYPE BODY f_bdt_card_type IS
 member function getcNum return varchar IS
@@ -335,6 +315,27 @@ END;
 select * from f_bdt_product where pprice=55;
 select p.getpBestSeller() from f_bdt_product p where rownum <10;
 select * from f_bdt_product p where p.getpCity()='Multiple-Ville';
+
+select count(*) from f_bde_product;
+select distinct count(*) from f_bdt_product p;
+select p.getpRef() from f_bdt_product p;
+select p.getpPrice() from f_bdt_product p;
+select p.getpType() from f_bdt_product p;
+select p.getpCity() from f_bdt_product p;
+select p.getpCityPop() from f_bdt_product p;
+select p.getpSector() from f_bdt_product p;
+select p.getpSector() from f_bdt_product p;
+select p.getpBestSeller() from f_bdt_product p;
+
+member function getpRef return varchar,
+member function getpPrice return varchar,
+member function getpType return varchar,
+member function getpCity return varchar,
+member function getpCityPop return varchar,
+member function getpSector return varchar,
+member function getpSectorSur return varchar,
+member function getpBestSeller return varchar
+
 
 drop table test;
 create table test(

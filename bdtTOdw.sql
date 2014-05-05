@@ -1,4 +1,4 @@
-Prompt **BDT TO DW : Desactivation des contraintes **
+Prompt ** BDT TO DW : Desactivation des contraintes **
 
 ALTER TABLE f_dw_ventes DISABLE CONSTRAINT f_dw_ventes_fkdat; 
 ALTER TABLE f_dw_ventes DISABLE CONSTRAINT f_dw_ventes_fkclient;
@@ -20,13 +20,22 @@ SELECT distinct d.getdDate(), d.getdTemperature(), d.getJourDeSemaine(), d.getSe
 from f_bdt_date d;
 
 Prompt **BDT TO DW : Insertions des données : Table f_dw_product **
-insert into f_dw_product(pref, pprice, ptype, pcity, pcitypop, psector, psectorsur, pbestseller)
-select distinct p.getpref(), p.getpprice(), p.getptype(), p.getcity(), p.getpsector(), p.getpsectorsur(), p.getpbestseller()
+insert into f_dw_product(pref, pprice, ptype, pcity, pcityPop, psector, psectorsur, pbestseller)
+select distinct p.getpref(), p.getpprice(), p.getptype(), p.getpcity(), p.getpcitypop(), p.getpSector(), p.getpSectorSur(), p.getpBestSeller()
 from F_BDT_PRODUCT p;
 
 Prompt **BDT TO DW : Insertions des données : Table f_dw_clerk **
+insert into f_dw_clerk(cnum, cexp, cstore, ccity, ccitypop, csector, csectorsur, cbestclerk, cbeststore) 
+select distinct cl.getcNum(), cl.getcExp(), cl.getcStore(), cl.getcCity(), cl.getcCityPop(), cl.getcSector(), cl.getcSectorSur(), cl.getcBestClerk(), cl.getcBestStore()
+from f_bdt_clerk cl
+where rownum <10;
 
 Prompt **BDT TO DW : Insertions des données : Table f_dw_card **
+insert into f_dw_card(cnum, coccupation, chouse)
+select distinct car.getcNum(), car.getcOccupation(), car.getcHouse()
+from f_bdt_card car;
+
+select count(*) from f_bd_card;
 
 Prompt **BDT TO DW : Insertions des données : Table f_dw_ventes **
 

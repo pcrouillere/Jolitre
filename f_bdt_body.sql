@@ -44,8 +44,6 @@ BEGIN
 END;
 END;
 /
-
-
 Prompt ** BDT : Creation Des Fonctions : Table f_bdt_product **
 CREATE OR REPLACE TYPE BODY f_bdt_product_type IS
 member function getpRef RETURN varchar
@@ -149,7 +147,7 @@ WHERE prod=SELF.pRef;
       RETURN 0;
 END;
 END;
-
+/
 Prompt ** BDT : Creation Des Fonctions : Table f_bdt_card **
 CREATE OR REPLACE TYPE BODY f_bdt_card_type IS
 member function getcNum return varchar IS
@@ -209,7 +207,7 @@ WHERE cl=SELF.cNum;
         RETURN 0;
 END;
 END;
-
+/
 Prompt ** BDT : Creation Des Fonctions : Table f_bdt_clerk **
 CREATE OR REPLACE TYPE BODY f_bdt_clerk_type IS
 member function getcNum return number IS
@@ -281,7 +279,7 @@ BEGIN
 	return 0;
 END;
 END;
-
+/
 Prompt ** BDT : Creation Des Fonctions : Table f_bdt_vente **
 CREATE OR REPLACE TYPE BODY f_bdt_ventes_type IS
 MEMBER FUNCTION getvNumber RETURN varchar is
@@ -296,8 +294,8 @@ BEGIN
    RETURN TO_DATE('1111-01-01','yyyy-mm-dd');
  END IF;
 END;
-MEMBER FUNCTION getvClient RETURN NUMBER IS
-	vFk number
+MEMBER FUNCTION getvClient RETURN varchar IS
+	vFk number;
 BEGIN
   IF vClient = 0 THEN
     RETURN 0;
@@ -306,13 +304,12 @@ BEGIN
     FROM f_dw_card cl
     WHERE cl.cNum=SELF.vClient;  
     RETURN vFk;
-
   EXCEPTION
     WHEN OTHERS THEN
       RETURN 1;
 END;
 MEMBER FUNCTION getvClerk RETURN VARCHAR IS
-	vFk number
+	vFk number;
 BEGIN
   IF vClerk = 0 THEN
     RETURN 0;
@@ -321,10 +318,10 @@ BEGIN
     FROM f_dw_clerk cl
     WHERE cl.cNum=SELF.vClerk;  
     RETURN vFk;
-
   EXCEPTION
     WHEN OTHERS THEN
-      RETURN 1;END;
+      RETURN 1;
+END;
 MEMBER FUNCTION getvProduit RETURN VARCHAR IS
   vFk varchar(30);
 BEGIN
@@ -340,3 +337,4 @@ BEGIN
         RETURN 'NR';
 END;
 END;
+/
