@@ -77,33 +77,33 @@ END;
 member function getpCity RETURN varchar
 IS
 NB number(7);
-BEGIN
-	select count(*) into nb from f_bde_city city where city.Cname = pCity;
-	if nb = 0 THEN
-		RETURN 'NR';
-	elsif nb = 1 THEN
-		RETURN pCity;
-	else
-		RETURN 'Multiple-Ville';
-  END IF;
+Begin
+select nbCity into nb from t_v_cityName v where v.Cname = pCity;
+  if nb = 0 THEN
+    RETURN 'NR';
+  elsif nb = 1 THEN
+    RETURN pCity;
+  else
+    RETURN 'Multiple-Ville';
+ END IF;
 END;
 member function getpCityPop RETURN varchar
 IS
 NB number(7);
-BEGIN
-	select count(*) into nb from f_bde_city city where city.Cname = pCity;
-	if nb = 0 THEN
-		RETURN 'NR';
-	elsif nb = 1 THEN
-		RETURN pCityPop;
-	else
-		RETURN 'Multiple-Ville';
-  END IF;
+Begin
+select nbCity into nb from t_v_cityName v where v.Cname = pCity;
+  if nb = 0 THEN
+    RETURN 'NR';
+  elsif nb = 1 THEN
+    RETURN pCityPop;
+  else
+    RETURN 'Multiple-Ville';
+ END IF;
 END;
 member function getpSector RETURN varchar IS
 NB number(7);
-BEGIN
-	select count(*) into nb from f_bde_sector s where s.sname = pSector;
+Begin
+select nbSector into nb from t_v_sectorName v where v.Sname = pSector;
 	if nb = 0 THEN
 		RETURN 'NR';
 	elsif nb = 1 THEN
@@ -115,8 +115,8 @@ END;
 member function getpSectorSur RETURN varchar
 IS
 NB number(7);
-BEGIN
-	select count(*) into nb from f_bde_sector s where s.sname = pSector;
+Begin
+select nbSector into nb from t_v_sectorName v where v.Sname = pSector;
 	if nb = 0 THEN
 		RETURN 'NR';
 	elsif nb = 1 THEN
@@ -128,15 +128,8 @@ END;
 member function getpBestSeller RETURN varchar
 IS
   theRank INTEGER;
-BEGIN
-SELECT rank INTO theRank FROM
-(
-SELECT v.vProduit AS prod, RANK() OVER (ORDER BY count(*) DESC) AS rank
-FROM f_bdt_ventes v, f_bdt_product p
-WHERE v.vProduit=p.pRef
-GROUP BY p.pRef
-)
-WHERE prod=SELF.pRef;
+Begin
+SELECT theRank INTO theRank FROM t_v_prodRank v WHERE v.prod=SELF.pRef;
     IF theRank < 10 THEN
       RETURN 1;
     ELSE
@@ -151,13 +144,17 @@ END;
 Prompt ** BDT : Creation Des Fonctions : Table f_bdt_card **
 CREATE OR REPLACE TYPE BODY f_bdt_card_type IS
 member function getcNum return varchar IS
-BEGIN
-	return cnum;
+Begin
+	If (LENGTH(Self.Cnum) >= 7) Then
+    Return self.cnum;
+  Else
+    return -1;
+  END IF;
 END;
 member function getcSector return varchar IS
 NB number(7);
-BEGIN
-	select count(*) into nb from f_bde_sector s where s.sname = cSector;
+Begin
+select nbSector into nb from t_v_sectorName v where v.Sname = cSector;
 	if nb = 0 THEN
 		RETURN 'NR';
 	elsif nb = 1 THEN
@@ -168,8 +165,8 @@ BEGIN
 END;
 member function getcSectorSur return varchar IS
 NB number(7);
-BEGIN
-	select count(*) into nb from f_bde_sector s where s.sname = cSector;
+Begin
+select nbSector into nb from t_v_sectorName v where v.Sname = cSector;
 	if nb = 0 THEN
 		RETURN 'NR';
 	elsif nb = 1 THEN
@@ -188,15 +185,8 @@ BEGIN
 END;
 member function getHighSpender return varchar IS
   theRank INTEGER;
-BEGIN
-SELECT rank INTO theRank FROM
-(
-SELECT client.cnum AS cl, RANK() OVER (ORDER BY count(*) DESC) AS rank
-FROM f_bdt_ventes v, f_bdt_card client
-WHERE v.vClient=client.cNum
-GROUP BY client.cNum
-)
-WHERE cl=SELF.cNum;
+Begin
+SELECT theRank INTO theRank FROM t_v_clientRank v WHERE v.cl=SELF.cNum;
     IF theRank < 100 THEN
       RETURN 1;
     ELSE
@@ -206,7 +196,7 @@ WHERE cl=SELF.cNum;
       WHEN OTHERS THEN
         RETURN 0;
 END;
-END;
+End;
 /
 Prompt ** BDT : Creation Des Fonctions : Table f_bdt_clerk **
 CREATE OR REPLACE TYPE BODY f_bdt_clerk_type IS
@@ -224,32 +214,32 @@ BEGIN
 END;
 member function getcCity return varchar IS
 NB number(7);
-BEGIN
-	select count(*) into nb from f_bde_city city where city.Cname = cCity;
-	if nb = 0 THEN
-		RETURN 'NR';
-	elsif nb = 1 THEN
-		RETURN cCity;
-	else
-		RETURN 'Multiple-Ville';
-  END IF;
+Begin
+select nbCity into nb from t_v_cityName v where v.Cname = cCity;
+  if nb = 0 THEN
+    RETURN 'NR';
+  elsif nb = 1 THEN
+    RETURN cCity;
+  else
+    RETURN 'Multiple-Ville';
+ END IF;
 END;
 member function getcCityPop return varchar IS
 NB number(7);
-BEGIN
-	select count(*) into nb from f_bde_city city where city.Cname = cCity;
-	if nb = 0 THEN
-		RETURN 'NR';
-	elsif nb = 1 THEN
-		RETURN cCityPop;
-	else
-		RETURN 'Multiple-Ville';
-  END IF;
+Begin
+select nbCity into nb from t_v_cityName v where v.Cname = cCity;
+  if nb = 0 THEN
+    RETURN 'NR';
+  elsif nb = 1 THEN
+    RETURN cCityPop;
+  else
+    RETURN 'Multiple-Ville';
+ END IF;
 END;
 member function getcSector return varchar IS
 NB number(7);
-BEGIN
-	select count(*) into nb from f_bde_sector s where s.sname = cSector;
+Begin
+select nbSector into nb from t_v_sectorName v where v.Sname = cSector;
 	if nb = 0 THEN
 		RETURN 'NR';
 	elsif nb = 1 THEN
@@ -260,8 +250,8 @@ BEGIN
 END;
 member function getcSectorSur return varchar IS
 NB number(7);
-BEGIN
-	select count(*) into nb from f_bde_sector s where s.sname = cSector;
+Begin
+select nbSector into nb from t_v_sectorName v where v.Sname = cSector;
 	if nb = 0 THEN
 		RETURN 'NR';
 	elsif nb = 1 THEN
@@ -271,12 +261,30 @@ BEGIN
   END IF;
 END;
 member function getcBestClerk return varchar IS
-BEGIN
-	return 0;
+theRank number(7);
+Begin
+SELECT theRank INTO theRank FROM t_v_clerkRank v WHERE v.cl=SELF.cNum;
+   IF theRank < 10 THEN
+     RETURN 1;
+   ELSE
+    RETURN 0;
+  END IF;
+  EXCEPTION
+   WHEN OTHERS THEN
+     RETURN 0;
 END;
 member function getcBestStore return varchar IS
-BEGIN
-	return 0;
+ theRank INTEGER;
+Begin
+SELECT theRank INTO theRank FROM t_v_storeRank v WHERE v.st=SELF.cStore;
+   IF theRank < 5 THEN
+     RETURN 1;
+   ELSE
+    RETURN 0;
+  END IF;
+  EXCEPTION
+   WHEN OTHERS THEN
+     RETURN 0;
 END;
 END;
 /
@@ -305,8 +313,8 @@ BEGIN
     WHERE cl.cNum=SELF.vClient;  
     RETURN vFk;
   EXCEPTION
-    WHEN OTHERS THEN
-      RETURN 1;
+    When Others Then
+      RETURN -1;
 END;
 MEMBER FUNCTION getvClerk RETURN VARCHAR IS
 	vFk number;
