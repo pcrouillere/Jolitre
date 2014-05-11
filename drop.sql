@@ -22,3 +22,13 @@ drop table f_dw_date;
 drop table f_dw_clerk;
 drop table f_dw_product;
 drop table f_dw_card;
+
+Prompt ** Vues : Drop view **
+Drop Table T_V_cityname;
+Drop Table T_V_sectorname;
+drop table t_v_clientrank;
+Drop Table T_V_prodrank;
+Drop Table T_V_clientnb;
+drop table t_v_clerkrank;
+Drop Table T_V_Storerank;
+

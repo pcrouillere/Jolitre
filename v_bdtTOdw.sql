@@ -1,15 +1,10 @@
-drop view v_cityname;
-
-
 Create Or Replace View V_Cityname(Nbcity, Cname) As Select Count(*), City.Cname From F_Bde_City City Group By City.Cname;
-Drop Table T_V_cityname;
 Create Table T_V_Cityname(
 Nbcity Number,
 Cname Varchar(20));
 Insert Into T_V_Cityname(Nbcity, Cname) Select V.Nbcity, V.Cname From V_Cityname v;
 
 Create Or Replace View V_Sectorname (Nbsector, Sname) As Select Count(*), S.Sname From F_Bde_Sector S Group By S.Sname;
-Drop Table T_V_sectorname;
 Create Table T_V_sectorname(
 Nbsector Number,
 Sname Varchar(20));
@@ -21,7 +16,7 @@ AS SELECT theRank, prod FROM
 FROM f_bdt_ventes v, f_bdt_product p
 WHERE v.vProduit=p.pRef
 Group By V.Vproduit);
-Drop Table T_V_prodrank;
+
 Create Table T_V_Prodrank(
 theRank Number,
 Prod Varchar(20));
@@ -37,7 +32,7 @@ FROM f_bdt_ventes v, f_bdt_card client
 WHERE v.vClient=client.cNum
 GROUP BY client.cNum
 );
-drop table t_v_clientrank;
+
 Create Table T_V_clientrank(
 theRank Number,
 Cl Varchar(20));
@@ -46,7 +41,7 @@ Insert Into T_V_Clientrank(Therank, Cl) Select P.Therank, P.Cl From V_Clientrank
 
 Create Or Replace View V_Clientnb(Cnum, Cnb)
 As Select Ca.Cnumber, Count(*) From F_Bde_Card Ca Group By Ca.Cnumber;
-Drop Table T_V_clientnb;
+
 Create Table T_V_Clientnb(
 Cnum Varchar(20),
 Cnb Number);
@@ -62,7 +57,7 @@ FROM f_bdt_ventes v, f_bdt_clerk clerk
 WHERE v.vClerk=clerk.cNum
 GROUP BY clerk.cNum, clerk.cstore
 );
-drop table t_v_clerkrank;
+
 Create Table T_V_clerkrank(
 theRank Number,
 Cl Varchar(20),
@@ -77,7 +72,7 @@ SELECT v.st AS st, RANK() OVER (ORDER BY count(*) DESC) AS theRank
 FROM v_clerkRank v
 GROUP BY v.st
 );
-Drop Table T_V_Storerank;
+
 Create Table T_V_storerank(
 theRank Number,
 St Varchar(20));

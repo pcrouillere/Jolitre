@@ -142,50 +142,77 @@ END;
 END;
 /
 Prompt ** BDT : Creation Des Fonctions : Table f_bdt_card **
+Prompt ** BDT : Creation Des Fonctions : Table f_bdt_card **
 CREATE OR REPLACE TYPE BODY f_bdt_card_type IS
 member function getcNum return varchar IS
+NB number(7);
 Begin
-	If (LENGTH(Self.Cnum) >= 7) Then
+select cnb into nb from t_v_clientnb where cnum = cnum;
+	If nb = 1 Then
     Return self.cnum;
   Else
     return -1;
   END IF;
 END;
 member function getcSector return varchar IS
+NB_c number(7);
 NB number(7);
 Begin
+select cnb into nb_c from t_v_clientnb where cnum = cnum;
 select nbSector into nb from t_v_sectorName v where v.Sname = cSector;
-	if nb = 0 THEN
-		RETURN 'NR';
-	elsif nb = 1 THEN
-		RETURN cSector;
-	else
-		RETURN 'Multiple-Sector';
+	If nb_c = 1 Then
+    if nb = 0 THEN
+      RETURN 'NR';
+    elsif nb = 1 THEN
+      RETURN cSector;
+    else
+      RETURN 'Multiple-Sector';
+    END IF;
+  Else
+    return 'Client Multiple';
   END IF;
 END;
 member function getcSectorSur return varchar IS
 NB number(7);
+NB_c number(7);
 Begin
 select nbSector into nb from t_v_sectorName v where v.Sname = cSector;
-	if nb = 0 THEN
-		RETURN 'NR';
-	elsif nb = 1 THEN
-		RETURN cSectorSur;
-	else
-		RETURN 'Multiple-Sector';
+select cnb into nb_c from t_v_clientnb where cnum = cnum;
+	If nb_c = 1 Then
+    if nb = 0 THEN
+      RETURN 'NR';
+    elsif nb = 1 THEN
+      RETURN cSectorSur;
+    else
+      RETURN 'Multiple-Sector';
+    END IF;
+    Else
+    return 'Client Multiple';
   END IF;
 END;
 member function getcOccupation return varchar IS
+NB_c number(7);
 BEGIN
-	return cOccupation;
+select cnb into nb_c from t_v_clientnb where cnum = cnum;
+	If nb_c = 1 Then
+    return cOccupation;
+  Else
+    return 'Client Multiple';
+  END IF;
 END;
 member function getcHouse return varchar IS
+NB_c number(7);
 BEGIN
-	return cHouse;
+select cnb into nb_c from t_v_clientnb where cnum = cnum;
+	If nb_c = 1 Then
+    return cHouse;
+  Else
+    return 'Client Multiple';
+  END IF;
 END;
 member function getHighSpender return varchar IS
   theRank INTEGER;
-Begin
+BEGIN
 SELECT theRank INTO theRank FROM t_v_clientRank v WHERE v.cl=SELF.cNum;
     IF theRank < 100 THEN
       RETURN 1;
@@ -197,96 +224,6 @@ SELECT theRank INTO theRank FROM t_v_clientRank v WHERE v.cl=SELF.cNum;
         RETURN 0;
 END;
 End;
-/
-Prompt ** BDT : Creation Des Fonctions : Table f_bdt_clerk **
-CREATE OR REPLACE TYPE BODY f_bdt_clerk_type IS
-member function getcNum return number IS
-BEGIN
-	RETURN cNum;
-END;
-member function getcExp return number IS
-BEGIN
-	Return cExp;
-END;
-member function getcStore return varchar IS
-BEGIN
-	return cStore;
-END;
-member function getcCity return varchar IS
-NB number(7);
-Begin
-select nbCity into nb from t_v_cityName v where v.Cname = cCity;
-  if nb = 0 THEN
-    RETURN 'NR';
-  elsif nb = 1 THEN
-    RETURN cCity;
-  else
-    RETURN 'Multiple-Ville';
- END IF;
-END;
-member function getcCityPop return varchar IS
-NB number(7);
-Begin
-select nbCity into nb from t_v_cityName v where v.Cname = cCity;
-  if nb = 0 THEN
-    RETURN 'NR';
-  elsif nb = 1 THEN
-    RETURN cCityPop;
-  else
-    RETURN 'Multiple-Ville';
- END IF;
-END;
-member function getcSector return varchar IS
-NB number(7);
-Begin
-select nbSector into nb from t_v_sectorName v where v.Sname = cSector;
-	if nb = 0 THEN
-		RETURN 'NR';
-	elsif nb = 1 THEN
-		RETURN cSector;
-	else
-		RETURN 'Multiple-Sector';
-  END IF;
-END;
-member function getcSectorSur return varchar IS
-NB number(7);
-Begin
-select nbSector into nb from t_v_sectorName v where v.Sname = cSector;
-	if nb = 0 THEN
-		RETURN 'NR';
-	elsif nb = 1 THEN
-		RETURN cSectorSur;
-	else
-		RETURN 'Multiple-Sector';
-  END IF;
-END;
-member function getcBestClerk return varchar IS
-theRank number(7);
-Begin
-SELECT theRank INTO theRank FROM t_v_clerkRank v WHERE v.cl=SELF.cNum;
-   IF theRank < 10 THEN
-     RETURN 1;
-   ELSE
-    RETURN 0;
-  END IF;
-  EXCEPTION
-   WHEN OTHERS THEN
-     RETURN 0;
-END;
-member function getcBestStore return varchar IS
- theRank INTEGER;
-Begin
-SELECT theRank INTO theRank FROM t_v_storeRank v WHERE v.st=SELF.cStore;
-   IF theRank < 5 THEN
-     RETURN 1;
-   ELSE
-    RETURN 0;
-  END IF;
-  EXCEPTION
-   WHEN OTHERS THEN
-     RETURN 0;
-END;
-END;
 /
 Prompt ** BDT : Creation Des Fonctions : Table f_bdt_vente **
 CREATE OR REPLACE TYPE BODY f_bdt_ventes_type IS
