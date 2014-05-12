@@ -1,4 +1,92 @@
 Prompt ** BDT : Creation Des Fonctions **
+Prompt ** BDT : Creation Des Fonctions : Table f_bdt_card **
+CREATE OR REPLACE TYPE BODY f_bdt_card_type IS
+member function getcNum return varchar IS
+NB number(7);
+Begin
+select cnb into nb from t_v_clientnb nb where nb.cnum = self.cnum;
+	If nb = 1 Then
+    Return self.cnum;
+  Else
+    return -1;
+  END IF;
+END;
+member function getcSector return varchar IS
+NB_c number(7);
+NB number(7);
+Begin
+select cnb into nb_c from t_v_clientnb nb where nb.cnum = self.cnum;
+select nbSector into nb from t_v_sectorName v where v.Sname = cSector;
+	If nb_c = 1 Then
+    if nb = 0 THEN
+      RETURN 'NR';
+    elsif nb = 1 THEN
+      RETURN cSector;
+    else
+      RETURN 'Multiple-Sector';
+    END IF;
+  Else
+    return 'CM';
+  END IF;
+END;
+member function getcSectorSur return varchar IS
+NB number(7);
+NB_c number(7);
+Begin
+select nbSector into nb from t_v_sectorName v where v.Sname = cSector;
+select cnb into nb_c from t_v_clientnb nb where nb.cnum = self.cnum;
+	If nb_c = 1 Then
+    if nb = 0 THEN
+      RETURN 'NR';
+    elsif nb = 1 THEN
+      RETURN cSectorSur;
+    else
+      RETURN 'Multiple-Sector';
+    END IF;
+    Else
+    return 'CM';
+  END IF;
+END;
+member function getcOccupation return varchar IS
+NB_c number(7);
+BEGIN
+select cnb into nb_c from t_v_clientnb nb where nb.cnum = self.cnum;
+	If nb_c = 1 Then
+    return cOccupation;
+  Else
+    return 'CM';
+  END IF;
+END;
+member function getcHouse return varchar IS
+NB_c number(7);
+BEGIN
+select cnb into nb_c from t_v_clientnb nb where nb.cnum = self.cnum;
+	If nb_c = 1 Then
+    return cHouse;
+  Else
+    return 'CM';
+  END IF;
+END;
+member function getHighSpender return varchar IS
+  theRank INTEGER;
+  NB_c number(7);
+BEGIN
+select cnb into nb_c from t_v_clientnb nb where nb.cnum = self.cnum;
+SELECT theRank INTO theRank FROM t_v_clientRank v WHERE v.cl=SELF.cNum;
+	If nb_c <> 1 Then
+    return 0;
+  else
+      IF theRank < 100 THEN
+        RETURN 1;
+      ELSE
+         RETURN 0;
+      END IF;
+  end if;
+END;
+End;
+/
+
+
 Prompt ** BDT : Creation Des Fonctions : Table f_bdt_date **
 CREATE OR REPLACE TYPE BODY f_bdt_date_type IS
 MEMBER FUNCTION getdDate RETURN DATE is
@@ -140,90 +228,6 @@ SELECT theRank INTO theRank FROM t_v_prodRank v WHERE v.prod=SELF.pRef;
       RETURN 0;
 END;
 END;
-/
-Prompt ** BDT : Creation Des Fonctions : Table f_bdt_card **
-Prompt ** BDT : Creation Des Fonctions : Table f_bdt_card **
-CREATE OR REPLACE TYPE BODY f_bdt_card_type IS
-member function getcNum return varchar IS
-NB number(7);
-Begin
-select cnb into nb from t_v_clientnb where cnum = cnum;
-	If nb = 1 Then
-    Return self.cnum;
-  Else
-    return -1;
-  END IF;
-END;
-member function getcSector return varchar IS
-NB_c number(7);
-NB number(7);
-Begin
-select cnb into nb_c from t_v_clientnb where cnum = cnum;
-select nbSector into nb from t_v_sectorName v where v.Sname = cSector;
-	If nb_c = 1 Then
-    if nb = 0 THEN
-      RETURN 'NR';
-    elsif nb = 1 THEN
-      RETURN cSector;
-    else
-      RETURN 'Multiple-Sector';
-    END IF;
-  Else
-    return 'Client Multiple';
-  END IF;
-END;
-member function getcSectorSur return varchar IS
-NB number(7);
-NB_c number(7);
-Begin
-select nbSector into nb from t_v_sectorName v where v.Sname = cSector;
-select cnb into nb_c from t_v_clientnb where cnum = cnum;
-	If nb_c = 1 Then
-    if nb = 0 THEN
-      RETURN 'NR';
-    elsif nb = 1 THEN
-      RETURN cSectorSur;
-    else
-      RETURN 'Multiple-Sector';
-    END IF;
-    Else
-    return 'Client Multiple';
-  END IF;
-END;
-member function getcOccupation return varchar IS
-NB_c number(7);
-BEGIN
-select cnb into nb_c from t_v_clientnb where cnum = cnum;
-	If nb_c = 1 Then
-    return cOccupation;
-  Else
-    return 'Client Multiple';
-  END IF;
-END;
-member function getcHouse return varchar IS
-NB_c number(7);
-BEGIN
-select cnb into nb_c from t_v_clientnb where cnum = cnum;
-	If nb_c = 1 Then
-    return cHouse;
-  Else
-    return 'Client Multiple';
-  END IF;
-END;
-member function getHighSpender return varchar IS
-  theRank INTEGER;
-BEGIN
-SELECT theRank INTO theRank FROM t_v_clientRank v WHERE v.cl=SELF.cNum;
-    IF theRank < 100 THEN
-      RETURN 1;
-    ELSE
-	     RETURN 0;
-   END IF;
-  EXCEPTION
-      WHEN OTHERS THEN
-        RETURN 0;
-END;
-End;
 /
 Prompt ** BDT : Creation Des Fonctions : Table f_bdt_vente **
 CREATE OR REPLACE TYPE BODY f_bdt_ventes_type IS

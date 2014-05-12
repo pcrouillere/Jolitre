@@ -28,9 +28,9 @@ insert into f_dw_clerk(cnum, cexp, cstore, ccity, ccitypop, csector, csectorsur,
 select distinct cl.getcNum(), cl.getcExp(), cl.getcStore(), cl.getcCity(), cl.getcCityPop(), cl.getcSector(), cl.getcSectorSur(), cl.getcBestClerk(), cl.getcBestStore()
 from f_bdt_clerk cl;
 
-Prompt **BDT TO DW : Insertions des donnï¿½es : Table f_dw_card **
-Insert Into F_Dw_Card(Cnum, Csector, Csectorsur, Coccupation, Chouse, Chighspenser)
-select distinct car.getcNum(), car.getcSector(), car.getcSectorSur(), car.getcOccupation(), car.getcHouse(), car.getHighSpender()
+Prompt **BDT TO DW : Insertions des données : Table f_dw_card **
+Insert Into F_Dw_Card(Cnum, csector, csectorsur, coccupation, chouse, chighspenser)
+select distinct car.getcNum(), car.getcsector(), car.getcsectorsur(), car.getcoccupation(), car.getchouse(), car.getHighSpender()
 from f_bdt_card car;
 
 Prompt **BDT TO DW : Insertions des donnï¿½es : Table f_dw_ventes **
