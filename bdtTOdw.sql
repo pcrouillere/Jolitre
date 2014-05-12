@@ -2,6 +2,7 @@ Prompt ** BDT TO DW : Desactivation des contraintes **
 ALTER TABLE f_dw_ventes DISABLE CONSTRAINT f_dw_ventes_fkdat; 
 ALTER TABLE f_dw_ventes DISABLE CONSTRAINT f_dw_ventes_fkclient;
 ALTER TABLE f_dw_ventes DISABLE CONSTRAINT f_dw_ventes_fkproduct;
+ALTER TABLE f_dw_ventes DISABLE CONSTRAINT f_dw_ventes_fkclerk;
 
 Alter table f_dw_clerk DISABLE CONSTRAINT f_dw_clerk_pk;
 DROP INDEX f_dw_clerk_idk;
@@ -44,6 +45,7 @@ Prompt **BDT TO DW : Insertions des donn�es pour g�rer les erreurs **
 INSERT INTO f_dw_product(pref, pprice, ptype, pcity, pcitypop, psector, psectorsur, pbestseller) values ('NR', null, null, null, null, null, null, null);
 insert into f_dw_clerk(cnum, cexp, cstore, ccity,ccitypop,csector,csectorsur,cbestclerk,cbeststore) values(0, null, null, null, null, null, null, null, null);
 insert into f_dw_date(ddate,dtemperature,djoursemaine,dsemaine,dmois,dannee) values (TO_DATE('1111-01-01','yyyy-mm-dd'), null, null, null, null, null);
+
 Prompt ** cr�ation des index **
 CREATE UNIQUE INDEX f_dw_clerk_idk on f_dw_clerk(cNum);
 CREATE UNIQUE INDEX f_dw_product_idk on f_dw_product(pRef);
@@ -60,3 +62,6 @@ Prompt ** activation des clefs etrang�res **
 ALTER TABLE f_dw_ventes enable CONSTRAINT f_dw_ventes_fkdat;
 ALTER TABLE f_dw_ventes enable CONSTRAINT f_dw_ventes_fkclient;
 ALTER TABLE f_dw_ventes enable CONSTRAINT f_dw_ventes_fkproduct;
+ALTER TABLE f_dw_ventes enable CONSTRAINT f_dw_ventes_fkclerk;
+
+COMMIT;

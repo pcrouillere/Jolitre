@@ -1,4 +1,96 @@
 Prompt ** BDT : Creation Des Fonctions **
+Prompt ** BDT : Creation Des Fonctions : Table f_bdt_clerk **
+CREATE OR REPLACE TYPE BODY f_bdt_clerk_type IS
+member function getcNum return number IS
+BEGIN
+	RETURN cNum;
+END;
+member function getcExp return number IS
+BEGIN
+	Return cExp;
+END;
+member function getcStore return varchar IS
+BEGIN
+	return cStore;
+END;
+member function getcCity return varchar IS
+NB number(7);
+Begin
+select nbCity into nb from t_v_cityName v where v.Cname = cCity;
+  if nb = 0 THEN
+    RETURN 'NR';
+  elsif nb = 1 THEN
+    RETURN cCity;
+  else
+    RETURN 'Multiple-Ville';
+ END IF;
+END;
+member function getcCityPop return varchar IS
+NB number(7);
+Begin
+select nbCity into nb from t_v_cityName v where v.Cname = cCity;
+  if nb = 0 THEN
+    RETURN 'NR';
+  elsif nb = 1 THEN
+    RETURN cCityPop;
+  else
+    RETURN 'Multiple-Ville';
+ END IF;
+END;
+member function getcSector return varchar IS
+NB number(7);
+Begin
+select nbSector into nb from t_v_sectorName v where v.Sname = cSector;
+	if nb = 0 THEN
+		RETURN 'NR';
+	elsif nb = 1 THEN
+		RETURN cSector;
+	else
+		RETURN 'Multiple-Sector';
+  END IF;
+END;
+member function getcSectorSur return varchar IS
+NB number(7);
+Begin
+select nbSector into nb from t_v_sectorName v where v.Sname = cSector;
+	if nb = 0 THEN
+		RETURN 'NR';
+	elsif nb = 1 THEN
+		RETURN cSectorSur;
+	else
+		RETURN 'Multiple-Sector';
+  END IF;
+END;
+member function getcBestClerk return varchar IS
+theRank number(7);
+Begin
+SELECT theRank INTO theRank FROM t_v_clerkRank v WHERE v.cl=SELF.cNum;
+   IF theRank < 10 THEN
+     RETURN 1;
+   ELSE
+    RETURN 0;
+  END IF;
+  EXCEPTION
+   WHEN OTHERS THEN
+     RETURN 0;
+END;
+member function getcBestStore return varchar IS
+ theRank INTEGER;
+Begin
+SELECT theRank INTO theRank FROM t_v_storeRank v WHERE v.st=SELF.cStore;
+   IF theRank < 5 THEN
+     RETURN 1;
+   ELSE
+    RETURN 0;
+  END IF;
+  EXCEPTION
+   WHEN OTHERS THEN
+     RETURN 0;
+END;
+END;
+/
+
+
 Prompt ** BDT : Creation Des Fonctions : Table f_bdt_card **
 CREATE OR REPLACE TYPE BODY f_bdt_card_type IS
 member function getcNum return varchar IS
@@ -82,6 +174,9 @@ SELECT theRank INTO theRank FROM t_v_clientRank v WHERE v.cl=SELF.cNum;
          RETURN 0;
       END IF;
   end if;
+  EXCEPTION
+    WHEN OTHERS THEN
+      RETURN 0;
 END;
 End;
 /
@@ -246,9 +341,6 @@ END;
 MEMBER FUNCTION getvClient RETURN varchar IS
 	vFk number;
 BEGIN
-  IF vClient = 0 THEN
-    RETURN 0;
-  END IF;
   SELECT cl.cNum INTO vFk
     FROM f_dw_card cl
     WHERE cl.cNum=SELF.vClient;  

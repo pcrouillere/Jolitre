@@ -57,13 +57,18 @@ Prompt ** DW: Creation des tables : Table ventes **
 create table f_dw_ventes (
 vNumber number,
 vProduit Varchar(30),
-vClerk Varchar (30),
+vClerk number(3),
 vCard varchar(20),
 vDate Date
 );
 ALTER TABLE f_dw_ventes
 ADD CONSTRAINT f_dw_ventes_fkdat FOREIGN KEY (vDate) REFERENCES f_dw_date(dDate);
+
 ALTER TABLE f_dw_ventes
 ADD CONSTRAINT f_dw_ventes_fkclient FOREIGN KEY (vCard) REFERENCES f_dw_card(cNum);
+
 ALTER TABLE f_dw_ventes
 ADD CONSTRAINT f_dw_ventes_fkproduct FOREIGN KEY (vProduit) REFERENCES f_dw_product(pRef);
+
+ALTER TABLE f_dw_ventes ADD CONSTRAINT f_dw_ventes_fkclerk FOREIGN KEY (vClerk) REFERENCES f_dw_clerk(cNum);
+
